@@ -10,4 +10,7 @@
     <ClInclude Include="src\Debugging\Log.h" />
     <ClInclude Include="src\StdLib.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Shaders\Basic.shader" />
+  </ItemGroup>
 </Project>
