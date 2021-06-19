@@ -4,11 +4,25 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Precompilied.cpp" />
     <ClCompile Include="src\Debugging\Log.cpp" />
+    <ClCompile Include="src\Rendering\VertexBuffer.cpp" />
+    <ClCompile Include="src\Rendering\IndexBuffer.cpp" />
+    <ClCompile Include="src\Rendering\VertexArray.cpp" />
+    <ClCompile Include="src\Rendering\Shader.cpp" />
+    <ClCompile Include="src\Rendering\Renderer.cpp" />
+    <ClCompile Include="src\Rendering\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Precompilied.h" />
     <ClInclude Include="src\Debugging\Log.h" />
     <ClInclude Include="src\StdLib.h" />
+    <ClInclude Include="src\Rendering\Renderer.h" />
+    <ClInclude Include="src\Rendering\VertexBuffer.h" />
+    <ClInclude Include="src\Rendering\IndexBuffer.h" />
+    <ClInclude Include="src\Rendering\VertexArray.h" />
+    <ClInclude Include="src\Rendering\VertexBufferLayout.h" />
+    <ClInclude Include="src\Rendering\Shader.h" />
+    <ClInclude Include="lib\stb_image\stb_image.h" />
+    <ClInclude Include="src\Rendering\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Shaders\Basic.shader" />

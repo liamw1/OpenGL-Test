@@ -1,6 +1,9 @@
 #pragma once
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_STATIC
+#include <stb_image.h>
 #include "StdLib.h"
 #include "Debugging/Log.h"
 
@@ -27,10 +30,14 @@ constexpr real PI = 3.14159265358979323846;
   The assert statments will ONLY appear in debug mode, and
   will be replaced with empty lines in release mode.
 */
-#if _DEBUG
-#define ASSERT(condition, messageOtherwise) if (!(condition)) logError(messageOtherwise, LogLevel::Error, __FILENAME__, __LINE__)
+#if MC_DEBUG
+#define ASSERT(condition, messageOtherwise) do { if (!(condition))\
+                                                 {\
+                                                 logError(messageOtherwise, LogLevel::Error, __FILENAME__, __LINE__);\
+                                                 __debugbreak();\
+                                                 } } while (false)
 #else
-#define ASSERT(condition, messageOtherwise)
+#define ASSERT(condition, messageOtherwise) 
 #endif
 
 /*

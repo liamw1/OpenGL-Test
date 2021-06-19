@@ -59,9 +59,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;MC_DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\GLFW\include;$(SolutionDir)lib\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\GLFW\include;$(SolutionDir)lib\glew-2.1.0\include;$(SolutionDir)lib\stb_image</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Precompilied.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -80,7 +80,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\GLFW\include;$(SolutionDir)lib\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\GLFW\include;$(SolutionDir)lib\glew-2.1.0\include;$(SolutionDir)lib\stb_image</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Precompilied.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -100,10 +100,24 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Rendering\IndexBuffer.cpp" />
+    <ClCompile Include="src\Rendering\Renderer.cpp" />
+    <ClCompile Include="src\Rendering\Shader.cpp" />
+    <ClCompile Include="src\Rendering\Texture.cpp" />
+    <ClCompile Include="src\Rendering\VertexArray.cpp" />
+    <ClCompile Include="src\Rendering\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lib\stb_image\stb_image.h" />
     <ClInclude Include="src\Debugging\Log.h" />
     <ClInclude Include="src\Precompilied.h" />
+    <ClInclude Include="src\Rendering\IndexBuffer.h" />
+    <ClInclude Include="src\Rendering\Renderer.h" />
+    <ClInclude Include="src\Rendering\Shader.h" />
+    <ClInclude Include="src\Rendering\Texture.h" />
+    <ClInclude Include="src\Rendering\VertexArray.h" />
+    <ClInclude Include="src\Rendering\VertexBuffer.h" />
+    <ClInclude Include="src\Rendering\VertexBufferLayout.h" />
     <ClInclude Include="src\StdLib.h" />
   </ItemGroup>
   <ItemGroup>
