@@ -44,6 +44,10 @@ int main(int argc, char** argv)
   unsigned int indices[] = { 0, 1, 2,
                              2, 3, 0 };
 
+  // Set up blending
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   // Create vertex array object
   VertexArray va;
   VertexBuffer vb(positions, 4 * 4 * sizeof(float));
@@ -60,15 +64,18 @@ int main(int argc, char** argv)
   // Setup shaders
   Shader shader("res/Shaders/Basic.shader");
   shader.bind();
+  shader.setUniform4f("u_Color", 0.3f, 0.8f, 0.3f, 1.0f);
 
-  // Add a uniform
-  shader.setUniform4f("u_Color", 0.2f, 0.5f, 0.2f, 1.0f);
+  // Setup textures
+  Texture texture("res/Textures/GrassBlock.png");
+  texture.bind(0);
+  shader.setUniform1i("u_Texture", 0);
 
   // Unbind everything
   va.unBind();
-  shader.unBind();
   vb.unBind();
   ib.unBind();
+  shader.unBind();
 
   // Create renderer
   Renderer renderer;
@@ -82,14 +89,7 @@ int main(int argc, char** argv)
     renderer.clear();
 
     shader.bind();
-    shader.setUniform4f("u_Color", 0.2f, g, 0.2f, 1.0f);
-
-    Texture texture("res/Textures/GrassBlock.png");
-    texture.bind(0);
-    shader.setUniform1i("u_Texture", 0);
-
-    va.bind();
-    ib.bind();
+    shader.setUniform4f("u_Color", 0.3f, 0.8f, 0.3f, 1.0f);
 
     renderer.draw(va, ib, shader);
 
