@@ -1,9 +1,14 @@
 #pragma once
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_impl_glfw.h"
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_STATIC
-#include <stb_image.h>
+#include <stb_image/stb_image.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include "StdLib.h"
 #include "Debugging/Log.h"
 
@@ -11,8 +16,11 @@
 
 using real = double;
 
+// Versions
+static const char* glsl_version = "#version 130";
+
 // Important constants
-constexpr real PI = 3.14159265358979323846;
+static constexpr real PI = 3.14159265358979323846;
 
 
 // ------------------------------ Macros ------------------------------ //
