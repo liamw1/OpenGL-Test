@@ -17,6 +17,8 @@
     <ClCompile Include="lib\vendor\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="lib\vendor\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Tests\ClearColor.cpp" />
+    <ClCompile Include="src\Tests\Test.cpp" />
+    <ClCompile Include="src\Tests\TextureTest2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Precompilied.h" />
@@ -39,7 +41,8 @@
     <ClInclude Include="lib\vendor\imgui\imstb_textedit.h" />
     <ClInclude Include="lib\vendor\imgui\imstb_truetype.h" />
     <ClInclude Include="src\Tests\Test.h" />
-    <ClInclude Include="src\Tests\ClearColor.h" />
+    <ClInclude Include="src\Tests\ClearColorTest.h" />
+    <ClInclude Include="src\Tests\TextureTest2D.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Shaders\Basic.shader" />

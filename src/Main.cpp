@@ -1,20 +1,22 @@
 #include "Precompilied.h"
 #include "Rendering/Renderer.h"
+#include "Tests/ClearColorTest.h"
+#include "Tests/TextureTest2D.h"
 
-int main(int argc, char** argv)
+GLFWwindow* windowInit()
 {
   GLFWwindow* window;
 
   /* Initialize the library */
   if (!glfwInit())
-    return -1;
+    exit(1);
 
   /* Create a windowed mode window and its OpenGL context */
   window = glfwCreateWindow(960, 540, "Minecraft 2", NULL, NULL);
   if (!window)
   {
     glfwTerminate();
-    return -1;
+    exit(1);
   }
 
   /* Make the window's context current */
@@ -22,6 +24,11 @@ int main(int argc, char** argv)
 
   glfwSwapInterval(1);
 
+  return window;
+}
+
+void openGLInit()
+{
   // Initialize GLEW
   if (glewInit() != GLEW_OK)
   {
@@ -36,116 +43,67 @@ int main(int argc, char** argv)
 
   std::cout << glGetString(GL_VERSION) << std::endl;
 
-  float positions[] = { -50.0f, -50.0f, 0.0f, 0.0f,
-                         50.0f, -50.0f, 1.0f, 0.0f,
-                         50.0f,  50.0f, 1.0f, 1.0f,
-                        -50.0f,  50.0f, 0.0f, 1.0f  };
-
-  unsigned int indices[] = { 0, 1, 2,
-                             2, 3, 0 };
-
   // Set up blending
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
 
-  // Create vertex array object
-  VertexArray va;
-  VertexBuffer vb(positions, 4 * 4 * sizeof(float));
-
-  // Set up vertex buffer layout for 2 floats
-  VertexBufferLayout layout;
-  layout.push<float>(2);
-  layout.push<float>(2);
-  va.addBuffer(vb, layout);
-
-  // Create index buffer to avoid vertex duplication
-  IndexBuffer ib(indices, 6);
-
-  // Create mvp matrix
-  glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
-  glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-
-  // Setup shaders
-  Shader shader("res/Shaders/Basic.shader");
-  shader.bind();
-
-  // Setup textures
-  Texture texture("res/Textures/GrassBlock.png");
-  texture.bind(0);
-  shader.setUniform1i("u_Texture", 0);
-
-  // Unbind everything
-  va.unBind();
-  vb.unBind();
-  ib.unBind();
-  shader.unBind();
-
-  // Create renderer
-  Renderer renderer;
-
-  // Setup ImGui
+void imguiInit(GLFWwindow* window)
+{
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO(); (void)io;
   ImGui::StyleColorsDark();
   ImGui_ImplGlfw_InitForOpenGL(window, true);
   ImGui_ImplOpenGL3_Init(glsl_version);
+}
 
-  glm::vec3 translationA(200, 200, 0);
-  glm::vec3 translationB(400, 200, 0);
+int main(int argc, char** argv)
+{
+  GLFWwindow* window = windowInit();
+  openGLInit();
+  imguiInit(window);
+  Renderer renderer;
 
-  float g = 0.0f;
-  float increment = 0.02f;
+  test::Test* currentTest = nullptr;
+  test::TestMenu* testMenu = new test::TestMenu(currentTest);
+  currentTest = testMenu;
+
+  testMenu->registerTest<test::ClearColorTest>("Clear Color");
+  testMenu->registerTest<test::TextureTest2D>("2D Texture");
+
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window))
   {
-    /* Render here */
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     renderer.clear();
 
-    // Start ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-
+    if (currentTest != nullptr)
     {
-      glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
-      glm::mat4 mvp = proj * view * model;
-      shader.bind();
-      shader.setUniformMat4f("u_MVP", mvp);
-      renderer.draw(va, ib, shader);
+      currentTest->OnUpdate(0.0f);
+      currentTest->OnRender();
+      ImGui::Begin("Test");
+      if (currentTest != testMenu && ImGui::Button("<-"))
+      {
+        delete currentTest;
+        currentTest = testMenu;
+      }
+      currentTest->OnImGuiRender();
+      ImGui::End();
     }
-
-    {
-      glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
-      glm::mat4 mvp = proj * view * model;
-      shader.bind();
-      shader.setUniformMat4f("u_MVP", mvp);
-      renderer.draw(va, ib, shader);
-    }
-
-    if (g > 1.0f || g < 0.0f)
-      increment *= -1;
-    g += increment;
-
-    // Create ImGui window
-    {
-      ImGui::SliderFloat3("Translation A", &translationA.x, 0.0f, 960.0f);
-      ImGui::SliderFloat3("Translation B", &translationB.x, 0.0f, 960.0f);
-      ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    }
-
-    // ImGui rendering
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    /* Swap front and back buffers */
     glfwSwapBuffers(window);
-
-    /* Poll for and process events */
     glfwPollEvents();
   }
+  if (currentTest != testMenu)
+    delete testMenu;
+  delete currentTest;
 
-  // Cleanup
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
